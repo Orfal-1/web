@@ -1,0 +1,24 @@
+{
+    "imagenes": [
+        {
+            "titulo": "Paisaje Montañoso",
+            "url": "https://via.placeholder.com/200x150.png?text=Montañas"
+        },
+        {
+            "titulo": "Playa Paradisíaca",
+            "url": "https://via.placeholder.com/200x150.png?text=Playa"
+        },
+        {
+            "titulo": "Ciudad Nocturna",
+            "url": "https://via.placeholder.com/200x150.png?text=Ciudad"
+        },
+        {
+            "titulo": "Bosque Encantado",
+            "url": "https://via.placeholder.com/200x150.png?text=Bosque"
+        },
+        {
+            "titulo": "Desierto Infinito",
+            "url": "https://via.placeholder.com/200x150.png?text=Desierto"
+        }
+    ]
+}
