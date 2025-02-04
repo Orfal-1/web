@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Helas.Corp</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <!--Encabezado-->
+    <header>
+        <h1>Bienvenidos a Nuestro Sitio Web</h1>
+        <nav>
+            <a href="/views/index.html">Inicio</a>
+            <a href="/views/contacto.html">Contacto</a>
+            <a href="/views/presupuesto.html">Presupuesto</a>
+            <a href="/views/galeria.html">Galería</a>
+        </nav>
+    </header>
+
+<!--Sección de Inicio-->
+<section id="inicio">
+    <h2>Inicio</h2>
+    <p>Esta es la portada del sitio web, aquí puedes encontrar las últimas noticias y más información.</p>
+</section>     
+
+<!-- News Section -->
+<section id="news" class="news">
+    <h2>Últimas Noticias</h2>
+    <p>Cargando noticias...</p>
+    <ul id="newsList"></ul>
+</section>
+
+<!--Sección de nosotros-->
+<section id="nosotros">
+    <h2>Sobre Nosotros</h2>
+    <p>Información sobre el sitio web y su propósito.</p>
+</section>
+
+<section id="contacto">
+    <h2>Contacto</h2>
+    <p>Contáctanos en nuestras redes sociales o envíanos un mensaje.</p>
+</section>
+
+<!--Pie de página-->
+<footer>
+    <p>&copy; 2025 Nuestro Sitio Web. Todos los derechos reservados.</p>
+</footer>
+
+<script>
+        // Cargar noticias desde un archivo JSON externo
+        document.addEventListener('DOMContentLoaded', function () {
+            fetch('../data/noticias.json')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Error al cargar el archivo JSON');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    const newsList = document.getElementById('newsList');
+                    newsList.innerHTML = ''; // Limpiar mensaje de carga
+                    data.noticias.forEach(noticia => {
+                        const li = document.createElement('li');
+                        li.innerHTML = `<strong>${noticia.titulo}</strong><br>${noticia.descripcion}`;
+                        newsList.appendChild(li);
+                    });
+                })
+                .catch(error => {
+                    console.error('Error al cargar las noticias:', error);
+                    document.querySelector('#news p').innerText = 'No se pudieron cargar las noticias.';
+                });
+        });
+</script>
+
+</body>
+</html>

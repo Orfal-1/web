@@ -1,0 +1,16 @@
+{
+    "noticias": [
+        {
+            "titulo": "Nueva versión de nuestro software",
+            "descripcion": "Hemos lanzado la versión 2.0 de nuestra plataforma con nuevas funcionalidades."
+        },
+        {
+            "titulo": "Evento de tecnología 2025",
+            "descripcion": "Participaremos en el próximo evento tecnológico el próximo mes."
+        },
+        {
+            "titulo": "Expansión a nuevos mercados",
+            "descripcion": "Nuestra empresa ahora ofrece servicios en América Latina."
+        }
+    ]
+}
