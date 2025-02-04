@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Helas.Corp</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css">
+</head>
+<body>
+    <!--Encabezado-->
+    <header>
+        <h1>Ubicación</h1>
+        <nav>
+            <a href="/views/index.html">Inicio</a>
+            <a href="/views/contacto.html">Contacto</a>
+            <a href="/views/presupuesto.html">Presupuesto</a>
+            <a href="/views/galeria.html">Galería</a>
+        </nav>
+    </header>
+    
+    <!--Sección de información de contacto-->
+    <section id="info-contacto">
+        <h2>Información de contacto</h2>
+        <p><strong>Empresa: </strong> Helas.Corp</p>
+        <p><strong>Dirección: </strong> 1600 Pennsylvania Avenue NW, Washington, DC 20500, Estados Unidos</p>
+        <p><strong>Teléfono:</strong> +123 456 755</p>
+        <p><strong>Email:</strong> contacto@minegocio.com</p>
+    </section>
+
+    <h2>📍 Nuestra Ubicación</h2>
+    <h4 class="margen-derecha">Encuentra nuestra sede y obtén la mejor ruta desde tu ubicación.</h4>
+    
+    <div id="map"></div>
+
+    <!--Pie de página-->
+    <footer>
+        <p>&copy; 2025 Nuestro Sitio Web. Todos los derechos reservados.</p>
+    </footer>
+
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-polylinedecorator/1.6.0/leaflet.polylineDecorator.min.js"></script>
+    <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Inicializar el mapa en un punto general
+        const map = L.map('map').setView([40.4168, -3.7038], 6);
+    
+        // Cargar el mapa de OpenStreetMap
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+    
+        // Ubicación de la empresa
+        const businessLocation = [43.594663396648784, 1.4492705999447895];
+    
+        // Agregar marcador en la empresa
+        L.marker(businessLocation).addTo(map)
+            .bindPopup('<b>Helas Corp</b><br>Toulouse, Francia')
+            .openPopup();
+    
+        function getClientLocation() {
+            if (!navigator.geolocation) {
+                alert('⚠️ Tu navegador no soporta geolocalización.');
+                return;
+            }
+    
+            navigator.geolocation.getCurrentPosition(
+                function (position) {
+                    const clientLocation = [
+                        position.coords.latitude,
+                        position.coords.longitude
+                    ];
+    
+                    // Marcar la ubicación del cliente
+                    L.marker(clientLocation).addTo(map)
+                        .bindPopup('<b>Tu ubicación</b>')
+                        .openPopup();
+    
+                    // Agregar la ruta desde el cliente hasta la empresa
+                    const routingControl = L.Routing.control({
+                        waypoints: [
+                            L.latLng(clientLocation),
+                            L.latLng(businessLocation)
+                        ],
+                        routeWhileDragging: true,
+                        createMarker: function(i, waypoint) {
+                            return L.marker(waypoint.latLng);
+                        },
+                        lineOptions: {
+                            styles: [{ color: 'blue', weight: 5 }]
+                        },
+                        addWaypoints: false,
+                        draggableWaypoints: false
+                    }).addTo(map);
+    
+                    // Esperar a que la ruta se genere y luego añadir las flechas
+                    routingControl.on('routesfound', function(e) {
+                        const routeCoordinates = e.routes[0].coordinates.map(coord => [coord.lat, coord.lng]);
+    
+                        // Crear la línea de la ruta
+                        const routeLine = L.polyline(routeCoordinates, {
+                            color: 'blue',
+                            weight: 5
+                        }).addTo(map);
+    
+                        // Agregar decorador con flechas
+                        L.polylineDecorator(routeLine, {
+                            patterns: [
+                                {
+                                    offset: '10%',
+                                    repeat: '20px',
+                                    symbol: L.Symbol.arrowHead({
+                                        pixelSize: 10,
+                                        polygon: false,
+                                        pathOptions: { stroke: true, color: 'red' }
+                                    })
+                                }
+                            ]
+                        }).addTo(map);
+    
+                        // Ajustar el mapa para encajar la ruta
+                        map.fitBounds(routeLine.getBounds());
+                    });
+                },
+                function () {
+                    alert('⚠️ No se pudo obtener tu ubicación.');
+                }
+            );
+        }
+    
+        // Llamar a la función para calcular la ruta
+        getClientLocation();
+    });
+    </script>
+    
+</body>
+</html>
